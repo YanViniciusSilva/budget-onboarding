@@ -1,0 +1,12 @@
+.checkbox {
+  @apply flex justify-center w-full h-[118px] items-center rounded-md !text-base font-semibold select-none border col-span-1 hover:bg-brand-white/15 animate-slideUp;
+}
+
+.controlNext {
+  @apply flex col-start-2 md:col-start-4 w-full h-12 justify-center items-center rounded-lg border border-brand-white text-brand-white text-base font-semibold cursor-pointer transition-opacity ease-in-out;
+}
+
+.controlPrev {
+  @apply col-span-1 w-full h-12 flex justify-center items-center rounded-lg bg-transparent border border-brand-white text-brand-white text-base font-semibold cursor-pointer transition-opacity ease-in-out;
+}
+

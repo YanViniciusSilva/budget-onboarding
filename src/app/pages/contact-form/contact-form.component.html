@@ -1,0 +1,28 @@
+<div class="relative mt-10">
+  <form [formGroup]="form" (submit)="onSubmit()" class="flex w-full justify-center">
+    <div class="grid grid-cols-1 grid-rows-6 space-y-4 w-full md:max-w-2xl">
+      <input
+        formControlName="name"
+        class="input"
+        [placeholder]="nameInputPlaceholder"
+        type="text"
+        [mask]="nameInputMask"
+      />
+
+      <input
+        formControlName="phone"
+        class="input"
+        [placeholder]="phoneInputPlaceholder"
+        type="tel"
+        maxlength="15"
+        [mask]="phoneInputMask"
+      />
+
+      <button
+        [disabled]="form.invalid"
+        type="submit"
+        class="row-start-6 h-12 rounded-lg bg-brand-gold transition-colors disabled:bg-transparent disabled:text-brand-white/50 disabled:!border-brand-white/50 border border-brand-white text-brand-white text-base font-semibold cursor-pointer"
+      >Iniciar orçamento</button>
+    </div>
+    </form>
+</div>

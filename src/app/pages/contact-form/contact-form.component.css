@@ -1,0 +1,3 @@
+.input {
+  @apply col-span-1 h-10 bg-brand-black border-b border-brand-white text-brand-white px-1 focus:outline-none placeholder:animate-slideUp;
+}

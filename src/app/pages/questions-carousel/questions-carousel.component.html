@@ -1,0 +1,116 @@
+<div class="relative mt-10">
+  @if (!isLoading()) {
+    <form [formGroup]="form" (submit)="submitForm()">
+      <div class="flex flex-row w-full justify-center gap-3 my-10">
+        @for (item of questions; track $index) {
+          <div
+            role="button"
+            (click)="activeIndex.set($index)"
+            class="w-3 h-3 border-2 border-x-brand-white rounded-full"
+            [ngClass]="{'bg-brand-white': activeIndex() === $index}"
+          ></div>
+        }
+      </div>
+
+      <div class="text-center mb-7">
+        <p class="!text-base font-semibold">
+          {{ questions[activeIndex()].question }}
+        </p>
+      </div>
+
+      <c-carousel
+        #carousel
+        [interval]="0"
+        [animate]="false"
+        [touch]="true"
+        [activeIndex]="activeIndexValue"
+        (itemChange)="onItemChange($event)"
+      >
+        <c-carousel-inner>
+          <ng-container formArrayName="questions">
+            @for (
+              item of questionsForm.controls;
+              track $index;
+              let i = $index
+            ) {
+              <c-carousel-item>
+                <ng-container [formGroupName]="i">
+                  <div class="grid grid-cols-2 gap-4" formArrayName="options">
+                    @for (
+                      options of getOptions(i).controls;
+                      track $index;
+                      let j = $index
+                    ) {
+                      <ng-container [formGroupName]="j">
+                        <input
+                          id="option-{{ j }}"
+                          type="checkbox"
+                          (change)="onSelectOption(i, j)"
+                          class="sr-only peer"
+                          [checked]="!options.value.isChecked"
+                        />
+                        <label
+                          role="checkbox"
+                          for="option-{{ j }}"
+                          class="checkbox"
+                          [ngClass]="{
+                            '!border-brand-gold text-brand-gold':
+                              options.value.isChecked,
+                            'border-brand-white text-brand-white':
+                              !options.value.isChecked,
+                          }"
+                        >
+                          {{ options.value.description }}
+                        </label>
+                      </ng-container>
+                    }
+                  </div>
+                </ng-container>
+              </c-carousel-item>
+            }
+          </ng-container>
+        </c-carousel-inner>
+
+      <c-carousel-control
+        role="button"
+        class="d-none"
+        direction="next"
+      >
+        <input #controlNext id="controlNext" type="button" hidden/>
+      </c-carousel-control>
+
+      <c-carousel-control
+        role="button"
+        class="d-none"
+        direction="prev"
+      ><input id="controlPrev" type="button" hidden/></c-carousel-control>
+      </c-carousel>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <label
+          class="controlPrev"
+          role="button"
+          for="controlPrev"
+          [ngClass]="
+            !iisFirstQuestionOnForm(activeIndex()) ?
+            'opacity-100' :
+            'opacity-0 invisible'"
+        >Anterior</label>
+          <label
+            class="controlNext"
+            [ngClass]="[
+              !hasNoOptionSelected(activeIndex()) ?
+              'opacity-100' :
+              'opacity-0 invisible',
+              isLastQuestionOnForm(activeIndex()) ?
+              'bg-utils-green' :
+              'bg-brand-gold',
+            ]"
+            role="button"
+            for="controlNext"
+            (click)="submitForm()"
+          >{{ isLastQuestionOnForm(activeIndex()) ? 'Finalizar' : 'Próxima' }}</label>
+      </div>
+    </form>
+  }
+</div>
