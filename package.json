@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "emulate": "ng build && firebase emulators:start"
   },
   "private": true,
   "dependencies": {
