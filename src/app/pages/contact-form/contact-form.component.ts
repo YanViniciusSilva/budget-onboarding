@@ -5,6 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MaskDirective } from '../../directives/mask.directive';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -33,9 +34,13 @@ export class ContactFormComponent {
     ]),
   });
 
-  constructor(private fb: UntypedFormBuilder) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private fb: UntypedFormBuilder,
+  ) {}
 
   onSubmit() {
     this.formSubmitted.emit(true);
+    this.firebaseService.buildBudgetPayload(this.form.value);
   }
 }

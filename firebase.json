@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/budget-onboarding",
+    "public": "dist/budget-onboarding/browser",
     "ignore": [
       "firebase.json",
       "**/.*",

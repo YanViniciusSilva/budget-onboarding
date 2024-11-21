@@ -25,13 +25,10 @@ module.exports = {
         },
       },
       animation: {
+        slideUpSuperSlow2: "slideUp 1.1s ease-in-out",
+        slideUpSuperSlow1: "slideUp 0.9s ease-in-out",
+        slideUpSlow: "slideUp 0.7s ease-in-out",
         slideUp: "slideUp 0.5s ease-in-out",
-      },
-      animationDelay: {
-        200: "200ms",
-        400: "400ms",
-        600: "600ms",
-        800: "800ms",
       },
     },
   },

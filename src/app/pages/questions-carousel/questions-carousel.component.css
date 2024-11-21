@@ -9,4 +9,3 @@
 .controlPrev {
   @apply col-span-1 w-full h-12 flex justify-center items-center rounded-lg bg-transparent border border-brand-white text-brand-white text-base font-semibold cursor-pointer transition-opacity ease-in-out;
 }
-

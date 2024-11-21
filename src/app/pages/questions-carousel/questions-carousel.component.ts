@@ -1,10 +1,11 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
+  EventEmitter,
+  input,
+  Output,
   signal,
 } from '@angular/core';
-import { QuestionModel, questions } from './helpers/questions.helper';
 import {
   FormArray,
   ReactiveFormsModule,
@@ -14,6 +15,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from '@coreui/angular';
+import { FirebaseService } from '../../services/firebase.service';
+import { FirebaseQuestionsModel } from '../../models/questions.model';
 
 @Component({
   selector: 'app-questions-carousel',
@@ -23,7 +26,8 @@ import { CarouselModule } from '@coreui/angular';
   styleUrls: ['./questions-carousel.component.css'],
 })
 export class QuestionsCarouselComponent implements AfterViewInit {
-  readonly questions: QuestionModel[] = questions;
+  questions = input.required<FirebaseQuestionsModel[]>();
+  @Output() formSubmitted = new EventEmitter<boolean>(false);
 
   isLoading = signal(true);
   activeIndex = signal<number>(0);
@@ -44,22 +48,22 @@ export class QuestionsCarouselComponent implements AfterViewInit {
 
   constructor(
     private fb: UntypedFormBuilder,
-    private cdr: ChangeDetectorRef,
+    private firebaseService: FirebaseService,
   ) {}
 
-  buildForm() {
-    this.questions.map((question) => {
+  buildForm(questions: FirebaseQuestionsModel[]) {
+    questions.map((question) => {
       this.questionsForm.push(
         this.fb.group({
-          questionId: this.fb.control(question.id),
-          question: this.fb.control(question.question),
+          questionId: this.fb.control(question.questionId),
+          question: this.fb.control(question.questionName),
           options: this.fb.array(
             question.options.map((option) =>
               this.fb.control(
                 {
-                  questionId: question.id,
-                  id: option.id,
-                  description: option.description,
+                  questionId: question.questionId,
+                  id: option.optionId,
+                  description: option.value,
                   isChecked: false,
                 },
                 Validators.required,
@@ -94,7 +98,7 @@ export class QuestionsCarouselComponent implements AfterViewInit {
       ?.value.every((option: any) => option.isChecked === false);
   }
 
-  onSelectOption(questionIndex: number, optionIndex: number) {
+  onSelectOption(questionIndex: number, optionIndex: number): void {
     const optionsArray = this.questionsForm
       .at(questionIndex)
       .get('options') as FormArray;
@@ -126,10 +130,10 @@ export class QuestionsCarouselComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.buildForm();
+    this.buildForm(this.questions());
   }
 
-  submitForm() {
+  onSubmit(): void {
     if (!this.isLastQuestionOnForm(this.activeIndexValue)) {
       return;
     }
@@ -139,5 +143,8 @@ export class QuestionsCarouselComponent implements AfterViewInit {
         .get('options')
         ?.value.find((option: any) => option.isChecked);
     });
+
+    this.firebaseService.buildBudgetPayload({ optionsSelected });
+    this.formSubmitted.emit(true);
   }
 }
