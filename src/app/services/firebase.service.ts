@@ -37,7 +37,11 @@ export class FirebaseService {
     if (budget) {
       this.budgetPayload.update((content) => {
         if (content) {
-          return { ...content, ...budget };
+          return {
+            dateCreated: new Date().toISOString(),
+            ...content,
+            ...budget,
+          };
         }
         return { ...budget };
       });
@@ -45,7 +49,7 @@ export class FirebaseService {
   }
 
   async saveBudget() {
-    return await addDoc(collection(db, 'bugdets'), this.budgetPayload());
+    return await addDoc(collection(db, 'budgets'), this.budgetPayload());
   }
 
   async getQuestions(): Promise<FirebaseQuestionsModel[]> {
