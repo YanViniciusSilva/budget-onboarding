@@ -39,6 +39,7 @@ export class FirebaseService {
         if (content) {
           return {
             dateCreated: new Date().toISOString(),
+            status: 'pending',
             ...content,
             ...budget,
           };
