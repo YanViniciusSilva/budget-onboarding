@@ -38,14 +38,10 @@ export class ContactFormComponent {
   constructor(
     private firebaseService: FirebaseService,
     private fb: UntypedFormBuilder,
-    private notificationsService: NotificationsService,
   ) {}
 
   onSubmit() {
     this.formSubmitted.emit(true);
     this.firebaseService.buildBudgetPayload(this.form.value);
-    this.notificationsService
-      .sendPushNotification()
-      .subscribe((res) => console.log(res));
   }
 }
