@@ -5,8 +5,8 @@ export interface Budget {
 }
 
 export interface FirebaseQuestionsModel {
-  questionId: 1;
-  questionName: 'Qual o tamanho aproximadamente?';
+  questionId: number;
+  questionName: string;
   options: Array<OptionsModel>;
 }
 

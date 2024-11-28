@@ -9,4 +9,5 @@ export const environment = {
     appId: '1:541620912191:web:fff47a8ba52a846d7c388a',
     measurementId: 'G-RL1CB6W099',
   },
+  expoNotificationToken: 'ExponentPushToken[y09rsTIVUW3DRXx0kY3hpO]',
 };

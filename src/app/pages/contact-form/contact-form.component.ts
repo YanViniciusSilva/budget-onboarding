@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { MaskDirective } from '../../directives/mask.directive';
 import { FirebaseService } from '../../services/firebase.service';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -37,10 +38,14 @@ export class ContactFormComponent {
   constructor(
     private firebaseService: FirebaseService,
     private fb: UntypedFormBuilder,
+    private notificationsService: NotificationsService,
   ) {}
 
   onSubmit() {
     this.formSubmitted.emit(true);
     this.firebaseService.buildBudgetPayload(this.form.value);
+    this.notificationsService
+      .sendPushNotification()
+      .subscribe((res) => console.log(res));
   }
 }
